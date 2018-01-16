@@ -1,73 +1,116 @@
 <template>
-  <!-- Configure "view" prop for QLayout -->
-  <q-layout>
+  <q-layout
+    ref="layout"
+    :view="layoutStore.view"
+    :left-breakpoint="layoutStore.leftBreakpoint"
+    :right-breakpoint="layoutStore.rightBreakpoint"
+    :reveal="layoutStore.reveal"
+  >
     <q-toolbar slot="header">
-      <!-- opens drawer below
-      <button class="hide-on-drawer-visible" @click="$refs.drawer.open()">
-        <i>menu</i>
-      </button>
-      -->
+      <q-btn flat @click="$refs.layout.toggleLeft()">
+        <q-icon name="menu" />
+      </q-btn>
       <q-toolbar-title>
-        Title
+        Quasar Layout
+        <span slot="subtitle">Empowering your app</span>
+      </q-toolbar-title>
+      <q-btn class="within-iframe-hide" flat @click="$router.replace('/')" style="margin-right: 15px">
+        <q-icon name="keyboard_arrow_left" />
+        Go back
+      </q-btn>
+      <q-btn flat @click="$refs.layout.toggleRight()">
+        <q-icon name="menu" />
+      </q-btn>
+    </q-toolbar>
+
+    <q-tabs slot="navigation" v-if="!layoutStore.hideTabs">
+      <q-route-tab slot="title" icon="play_circle_outline" to="#" replace label="Play with Layout" />
+      <q-route-tab slot="title" icon="view_array" to="#" replace label="Drawer Panels" />
+      <q-route-tab slot="title" icon="pin_drop" to="#" replace label="Fixed Positioning" />
+      <q-route-tab slot="title" icon="play_for_work" to="#" replace label="Floating Action Button" />
+    </q-tabs>
+
+    <q-scroll-area slot="left" style="width: 100%; height: 100%">
+      <q-list-header>Left Panel</q-list-header>
+      <q-side-link item to="#">
+        <q-item-side icon="account circle" />
+        <q-item-main label="Play with Layout" sublabel="Learn more about it" />
+        <q-item-side right icon="thumb_up" />
+      </q-side-link>
+      <q-side-link item to="#">
+        <q-item-side icon="view_array" />
+        <q-item-main label="Drawer Panels" sublabel="Layout left/right sides" />
+      </q-side-link>
+      <q-side-link item to="#">
+        <q-item-side icon="pin_drop" />
+        <q-item-main label="Fixed Positioning" sublabel="...on a Layout" />
+      </q-side-link>
+      <q-side-link item to="#">
+        <q-item-side icon="play_for_work" />
+        <q-item-main label="Floating Action Button" sublabel="For Page actions" />
+      </q-side-link>
+
+      <div v-if="layoutStore.leftScroll" style="padding: 25px 16px 16px;">
+        <p class="caption" v-for="n in 50">
+          <em>Left Panel has intended scroll</em>
+        </p>
+      </div>
+    </q-scroll-area>
+
+    <q-scroll-area slot="right" style="width: 100%; height: 100%">
+      <q-list-header>Right Panel</q-list-header>
+      <div v-if="layoutStore.rightScroll" style="padding: 25px 16px 16px;">
+        <p class="caption" v-for="n in 50">
+          <em>Right Panel has intended scroll</em>
+        </p>
+      </div>
+    </q-scroll-area>
+
+
+    <q-toolbar slot="footer">
+      <q-toolbar-title>
+        Footer
       </q-toolbar-title>
     </q-toolbar>
-
-    <!-- Navigation Tabs
-    <q-tabs slot="navigation">
-      <q-route-tab slot="title" icon="view_quilt" to="/layout/about" replace hide="icon" label="About" />
-      <q-route-tab slot="title" icon="view_day" to="/layout/toolbar" replace hide="icon" label="Toolbar" />
-      <q-route-tab slot="title" icon="view_day" to="/layout/tabs" replace label="Tabs" />
-      <q-route-tab slot="title" icon="input" to="/layout/drawer" replace label="Drawer" />
-    </q-tabs>
-    -->
-
-    <!-- Left Side Panel
-    <div slot="left">
-      <q-list no-border link inset-delimiter>
-        <q-list-header>Essential Links</q-list-header>
-        <q-item>
-          <q-item-side icon="school" />
-          <q-item-main label="Docs" sublabel="quasar-framework.org" />
-        </q-item>
-        <q-item>
-          <q-item-side icon="record_voice_over" />
-          <q-item-main label="Forum" sublabel="forum.quasar-framework.org" />
-        </q-item>
-        <q-item>
-          <q-item-side icon="chat" />
-          <q-item-main label="Gitter Channel" sublabel="Quasar Lobby" />
-        </q-item>
-        <q-item>
-          <q-item-side icon="rss feed" />
-          <q-item-main label="Twitter" sublabel="@quasarframework" />
-        </q-item>
-      </q-list>
-    </div>
-    -->
-
-    <!-- Right Side Panel
-    <div slot="right">
-      ...
-    </div>
-    -->
-
-    <router-view />
-
-    <!-- Footer
-    <q-toolbar slot="footer">
-      ...
-    </q-toolbar>
-    -->
   </q-layout>
 </template>
-
 <script>
+import {
+  QLayout,
+  QToolbar,
+  QToolbarTitle,
+  QSearch,
+  QTabs,
+  QRouteTab,
+  QBtn,
+  QIcon,
+  QItemSide,
+  QItemMain,
+  QSideLink,
+  QListHeader,
+  QScrollArea
+} from 'quasar'
+import layoutStore from './layout-store'
 export default {
+  components: {
+    QLayout,
+    QToolbar,
+    QToolbarTitle,
+    QSearch,
+    QTabs,
+    QRouteTab,
+    QBtn,
+    QIcon,
+    QItemSide,
+    QItemMain,
+    QSideLink,
+    QListHeader,
+    QScrollArea
+  },
   data () {
-    return {}
+    return {
+      layoutStore
+    }
   }
 }
 </script>
-
-<style>
-</style>
