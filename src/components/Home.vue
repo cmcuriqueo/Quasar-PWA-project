@@ -77,7 +77,8 @@
 	</div>
 
     <router-link to="/hello"><q-btn icon="sentiment very satisfied">To Hello</q-btn></router-link>
-    <q-btn icon="camera" @click="onCamera">Camera</q-btn>
+    <q-btn icon="camera" @click="openCamera">Camerae</q-btn>
+    <img id="imageFile" src="#"/>
   </div>
 </div>
     <q-toolbar slot="footer">
@@ -90,6 +91,7 @@
 </template>
 
 <script>
+
 import {
   QLayout,
   QToolbar,
@@ -127,28 +129,25 @@ export default {
       layoutStore
     }
   },
-  mounted() {
-    document.addEventListener("deviceready", onDeviceReady, false);
-  }
   name: 'home',
   methods: {
-    onDeviceReady: function () {
-        console.log(navigator.camera);
-    },
-    onCamera: function () {
-      navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-          destinationType: Camera.DestinationType.DATA_URL
-      });
+    openCamera(selection) {
 
-      function onSuccess(imageData) {
-          var image = document.getElementById('myImage');
-          image.src = "data:image/jpeg;base64," + imageData;
-      }
+      navigator.camera.getPicture(onSuccess, onFail, {  
+            quality: 50, 
+            destinationType: Camera.DestinationType.DATA_URL 
+         });  
+         
+         function onSuccess(imageData) { 
+            var image = document.getElementById('myImage'); 
+            image.src = "data:image/jpeg;base64," + imageData; 
+         }  
+         
+         function onFail(message) { 
+            //alert('Failed because: ' + message); 
+         }
+       }
 
-      function onFail(message) {
-          alert('Failed because: ' + message);
-      }
-    }
   }
 }
 </script>
